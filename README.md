@@ -1,4 +1,9 @@
 # SOKit
 Object-C For iOS, Some Class and Category
 
-Need AFNetworking and SDWebImage
+Need import libs:
+AFNetworking
+SDWebImage
+FMDB
+WebViewJavascript
+HTML+AttributedString
