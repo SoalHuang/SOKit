@@ -1,0 +1,19 @@
+//
+//  CCPopupButtonGroupView.h
+//  CreditCard
+//
+//  Created by soso on 15/5/14.
+//  Copyright (c) 2015年 com.9188. All rights reserved.
+//
+
+#import "CCBaseView.h"
+#import "CCPopupButtonItem.h"
+
+@class CCPopupButtonGroupView;
+typedef void(^CCPopupButtonGroupViewSelectedItemBlock)(CCPopupButtonGroupView *groupView, NSInteger index);
+
+@interface CCPopupButtonGroupView : CCBaseView <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@property (strong, nonatomic, readonly) UICollectionView *collectionView;
+@property (copy, nonatomic) CCPopupButtonGroupViewSelectedItemBlock selectedBlock;
+@property (strong, nonatomic) NSArray *items;
+@end

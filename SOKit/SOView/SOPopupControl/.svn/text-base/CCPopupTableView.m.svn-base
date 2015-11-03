@@ -1,0 +1,39 @@
+//
+//  CCPopupTableView.m
+//  CreditCard
+//
+//  Created by soso on 15/5/14.
+//  Copyright (c) 2015年 com.9188. All rights reserved.
+//
+
+#import "CCPopupTableView.h"
+
+@interface CCPopupTableView ()
+
+@end
+
+@implementation CCPopupTableView
+
+- (void)dealloc {
+    
+}
+
+- (instancetype)init {
+    return ([self initWithFrame:CGRectZero style:UITableViewStylePlain]);
+}
+
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+    self = [super initWithFrame:frame style:style];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        
+    }
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+}
+
+@end

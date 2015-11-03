@@ -1,0 +1,104 @@
+//
+//  CCPopupButtonGroupView.m
+//  CreditCard
+//
+//  Created by soso on 15/5/14.
+//  Copyright (c) 2015年 com.9188. All rights reserved.
+//
+
+#import "CCPopupButtonGroupView.h"
+#import "CCPopupButtonCell.h"
+
+@interface CCPopupButtonGroupView ()
+@property (strong, nonatomic) UICollectionViewFlowLayout *flowLayout;
+@end
+
+@implementation CCPopupButtonGroupView
+
+- (void)dealloc {
+    
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        _contentInsets = UIEdgeInsetsZero;
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        _collectionView = [[UICollectionView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.bounds, self.contentInsets) collectionViewLayout:self.flowLayout];
+        self.collectionView.backgroundView = nil;
+        self.collectionView.backgroundColor = [UIColor clearColor];
+        [self.collectionView setAlwaysBounceHorizontal:YES];
+        self.collectionView.bounces = NO;
+        self.collectionView.dataSource = self;
+        self.collectionView.delegate = self;
+        [self addSubview:self.collectionView];
+    }
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.collectionView.frame = UIEdgeInsetsInsetRect(self.bounds, self.contentInsets);
+}
+
+- (void)setItems:(NSArray *)items {
+    _items = [items copy];
+    [self.collectionView reloadData];
+}
+
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return ([self.items count]);
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIndentifier = @"cellIndentifier";
+    [collectionView registerClass:[CCPopupButtonCell class] forCellWithReuseIdentifier:cellIndentifier];
+    CCPopupButtonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIndentifier forIndexPath:indexPath];
+    CCPopupButtonItem *item = (CCPopupButtonItem *)[self.items objectAtIndex:indexPath.item];
+    cell.separatorInset = UIEdgeInsetsMake(10, 0, 10, 0);
+    cell.separatorColor = (item == [self.items firstObject]) ? [UIColor clearColor] : UIColorFromRGB(0xe4e4e4);
+    cell.textLabel.text = item.text;
+    cell.textLabel.textColor = [item isSelected] ? UIColorFromRGB(0xdf302f) : UIColorFromRGB(0x757575);
+    cell.imageView.image = [UIImage imageNamed:([item isSelected] ? @"solid_red_arrow" : @"solid_grey_arrow")];
+    return (cell);
+}
+#pragma mark -
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if(self.selectedBlock) {
+        self.selectedBlock(self, indexPath.row);
+    }
+}
+#pragma mark -
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CCPopupButtonItem *item = (CCPopupButtonItem *)[self.items objectAtIndex:indexPath.item];
+    return (item.size);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return (UIEdgeInsetsZero);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return (0);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return (0);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return (CGSizeZero);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return (CGSizeZero);
+}
+#pragma mark -
+
+@end

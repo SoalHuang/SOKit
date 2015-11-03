@@ -1,0 +1,94 @@
+//
+//  CCPopupButtonCell.m
+//  CreditCard
+//
+//  Created by soso on 15/5/14.
+//  Copyright (c) 2015年 com.9188. All rights reserved.
+//
+
+#import "CCPopupButtonCell.h"
+
+@interface CCPopupButtonCell ()
+@property (strong, nonatomic, readonly) UIView *bgView;
+@property (strong, nonatomic, readonly) UIView *separatorLineView;
+@end
+
+@implementation CCPopupButtonCell
+
+- (void)dealloc {
+    
+}
+
+- (instancetype)init {
+    return ([self initWithFrame:CGRectZero]);
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if(self) {
+        self.backgroundColor = [UIColor clearColor];
+        _contentInsets = UIEdgeInsetsMake(2, 2, 2, 2);
+        _space = 3.0f;
+        _imageSize = CGSizeMake(7, 4);
+        _textSize = CGSizeMake(60, 20);
+        _bounceType = CCPopupButtonCellBounceTypeHorizontal;
+        _separatorInset = UIEdgeInsetsZero;
+        self.separatorColor = [UIColor lightGrayColor];
+        
+        _bgView = [[UIView alloc] initWithFrame:self.bounds];
+        self.bgView.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.bgView];
+        
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.imageSize.width, self.imageSize.height)];
+        [self.bgView addSubview:self.imageView];
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.imageView.frame) + self.space, 0, self.textSize.width, self.textSize.height)];
+        self.textLabel.backgroundColor = [UIColor clearColor];
+        self.textLabel.textColor = [UIColor blackColor];
+        self.textLabel.textAlignment = NSTextAlignmentCenter;
+        self.textLabel.font = [UIFont systemFontOfSize:14];
+        [self.bgView addSubview:self.textLabel];
+        
+        _separatorLineView = [[UIView alloc] init];
+        self.separatorLineView.backgroundColor = self.separatorColor;
+        [self addSubview:self.separatorLineView];
+        
+        //self.bgView.layer.borderWidth = self.textLabel.layer.borderWidth = self.imageView.layer.borderWidth = 1;
+    }
+    return (self);
+}
+
+- (void)layoutSubviews {
+    CGRect inFrame = UIEdgeInsetsInsetRect(self.bounds, self.contentInsets);
+    [self.textLabel sizeToFit];
+    self.bgView.frame = CGRectMake(0, 0, ceilf(CGRectGetWidth(self.textLabel.bounds) + self.space + CGRectGetWidth(self.imageView.bounds)), ceilf(MAX(CGRectGetHeight(self.textLabel.bounds), CGRectGetHeight(self.imageView.bounds))));
+    self.bgView.center = CGPointMake(CGRectGetMidX(inFrame), CGRectGetMidY(inFrame));
+    self.textLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.textLabel.bounds), CGRectGetHeight(self.textLabel.bounds));
+    self.imageView.frame = CGRectMake(CGRectGetMaxX(self.textLabel.frame) + self.space, 0, self.imageSize.width, self.imageSize.height);
+    self.textLabel.centerY = self.imageView.centerY = CGRectGetHeight(self.bgView.bounds) / 2.0f;
+    
+    CGRect separatorFrame = UIEdgeInsetsInsetRect(self.bounds, self.separatorInset);
+    CGFloat lineWidth = 1.0f / [[UIScreen mainScreen] scale];
+    self.separatorLineView.frame = CGRectMake(0, CGRectGetMinY(separatorFrame), lineWidth, CGRectGetHeight(separatorFrame));
+}
+
+- (void)setContentInsets:(UIEdgeInsets)contentInsets {
+    _contentInsets = contentInsets;
+    [self setNeedsLayout];
+}
+
+- (void)setSpace:(CGFloat)space {
+    _space = space;
+    [self setNeedsLayout];
+}
+
+- (void)setSeparatorInset:(UIEdgeInsets)separatorInset {
+    _separatorInset = separatorInset;
+    [self setNeedsLayout];
+}
+
+- (void)setSeparatorColor:(UIColor *)separatorColor {
+    _separatorColor = separatorColor;
+    self.separatorLineView.backgroundColor = self.separatorColor;
+}
+
+@end
