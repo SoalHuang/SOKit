@@ -1,5 +1,5 @@
 # SOKit
-Object-C For iOS, Some Class and Category
+Objective-C For iOS, Some Class and Category
 
 Need import libs:
 AFNetworking
